@@ -1,7 +1,6 @@
 # aem-hotfix-installer
-This utility automates the process of installing hotfixes on an AEM instance in the order specified.
-
-**_Use at your own risk._**
+This utility automates the process of installing hotfixes on an AEM instance in the order specified. It is still a work in progress and will keep evolving so, please **_Use at your own risk._**.
+If you have any nice additions to the code, please submit a PR and I will try my best to include it.
 
 ### To use
 * Add your hotfix jars to the resources directory.
