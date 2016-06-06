@@ -5,6 +5,14 @@ If you have any nice additions to the code, please submit an issue and a corresp
 
 Please look at the current list of issues to see what additions are being considered.
 
+### Sample config.properties file
+host=localhost
+port=4502
+username=admin
+password=admin
+installPackages=false
+hotfixes=acs-aem-commons-content-2.1.0-min.zip,cq-6.1.0-hotfix-9104-1.0.zip
+
 ### To use
 * Create a folder that will have the config.properties and the hotfix packcages.
 * Update the config.properties file.
@@ -28,3 +36,4 @@ Please look at the current list of issues to see what additions are being consid
     * hotfixes=List of HFs to be installed, in order. The names here should match the file names of the packages.
         * for example "acs-aem-commons-content-2.1.0.zip, cq-6.1.0-hotifx-9104-1.0.zip"
 * Then run HotfixInstaller main class.
+
