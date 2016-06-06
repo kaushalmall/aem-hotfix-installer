@@ -6,12 +6,15 @@ If you have any nice additions to the code, please submit an issue and a corresp
 Please look at the current list of issues to see what additions are being considered.
 
 ### Sample config.properties file
+```
 host=localhost
 port=4502
 username=admin
 password=admin
 installPackages=false
 hotfixes=acs-aem-commons-content-2.1.0-min.zip,cq-6.1.0-hotfix-9104-1.0.zip
+```
+
 
 ### To use
 * Create a folder that will have the config.properties and the hotfix packcages.
