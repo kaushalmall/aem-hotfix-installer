@@ -39,7 +39,11 @@ public class HotfixInstaller {
 
         try {
 
-            Config.loadProperties();
+            if( args != null && args.length == 1 ){
+                Config.loadProperties( args[0] );
+            } else {
+                Config.loadProperties();
+            }
 
             String host = Config.properties.getString(Constants.HOST);
             String port = Config.properties.getString(Constants.PORT);
@@ -72,7 +76,7 @@ public class HotfixInstaller {
 
     private static boolean promptKeyInput(String hfName) {
         boolean userFlag = false;
-        System.out.println("\nDo you want to install " + hfName + "? Please check the logs, make sure the previous HF installed correctly and then press \"Y\" to install or press \"N\" to skip.");
+        System.out.println("\n Do you want to install " + hfName + "? \n Please check the logs, make sure the previous HF installed correctly. \n Press \"Y\" to install or press \"N\" to skip.");
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
         if (StringUtils.isNotBlank(userInput)) {

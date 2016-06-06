@@ -1,6 +1,0 @@
-2016-06-06 14:17:30.923 [INFO ] [main] HotfixInstaller - host: localhost
-2016-06-06 14:17:30.925 [INFO ] [main] HotfixInstaller - port: 4502
-2016-06-06 14:17:30.926 [INFO ] [main] HotfixInstaller - username: admin
-2016-06-06 14:17:30.926 [INFO ] [main] HotfixInstaller - password: admin
-2016-06-06 14:17:30.926 [INFO ] [main] HotfixInstaller - hotfixes: [acs-aem-commons-content-2.1.0-min.zip, cq-6.1.0-hotfix-9104-1.0.zip]
-2016-06-06 14:17:40.795 [INFO ] [main] HotfixInstaller - Finished!
