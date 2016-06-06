@@ -30,8 +30,6 @@ import java.util.Scanner;
  * To install packages, change installPackages property to true. By default, this will only upload packages.
  * <p>
  * <p>
- * TODO:1. add functionality to handle hotfixes from an external repository instead of having it in the classpath
- * TODO:2. add functionality where the code checks if the HF is installed already before installing it.
  */
 public class HotfixInstaller {
 
