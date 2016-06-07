@@ -14,6 +14,7 @@ public class Constants {
     public static final String ADMIN = "admin";
     public static final String HOTFIXES = "hotfixes";
     public static final String CRX_PACKMGR_SERVICE_JSP = "/crx/packmgr/service.jsp";
+    public static final String CRX_PACKMGR_LS = CRX_PACKMGR_SERVICE_JSP + "?cmd=ls";
     public static final String NAME = "name";
     public static final String FORCE = "force";
     public static final String INSTALL = "install";

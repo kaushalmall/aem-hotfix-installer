@@ -1,5 +1,6 @@
 package com.adobe.aem.utilities.hotfix.installer;
 
+import com.adobe.aem.utilities.hotfix.installer.jaxb.packages.object.Crx;
 import com.adobe.aem.utilities.hotfix.installer.utility.Config;
 import com.adobe.aem.utilities.hotfix.installer.utility.Constants;
 import com.adobe.aem.utilities.hotfix.installer.utility.Utils;
@@ -37,10 +38,21 @@ public class HotfixInstaller {
 
     public static void main(String[] args) {
 
+        boolean isCheckRun = false;
+
         try {
 
             if( args != null && args.length == 1 ){
                 Config.loadProperties( args[0] );
+            } else if( args != null && args.length == 2 ){
+                Config.loadProperties( args[0] );
+
+                String runFlag = args[1];
+
+                if( runFlag.equalsIgnoreCase( "check" ) ){
+                    isCheckRun = true;
+                }
+
             } else {
                 Config.loadProperties();
             }
@@ -60,6 +72,14 @@ public class HotfixInstaller {
 
             HttpHost httpHost = new HttpHost(host, Integer.parseInt(port));
             Credentials credentials = new UsernamePasswordCredentials(userName, password);
+
+            List<Crx.Response.Data.Packages.Package> currentPackagesList =
+                    Utils.getCurrentHFList( Utils.setupClient( credentials ), httpHost );
+
+            if( isCheckRun ){
+                Utils.checkCurrentInstalledHotfixes( currentPackagesList, hotfixes );
+                return;
+            }
 
             for (String hfName : hotfixes) {
 
@@ -126,6 +146,5 @@ public class HotfixInstaller {
                 }
             }
         }
-
     }
 }
