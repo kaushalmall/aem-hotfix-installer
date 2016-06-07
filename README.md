@@ -5,6 +5,8 @@ If you have any nice additions to the code, please submit an issue and a corresp
 
 Please look at the current list of issues to see what additions are being considered.
 
+**I have not tested this for Service Pack Installs.**
+
 ### Sample config.properties file
 ```
 host=localhost
