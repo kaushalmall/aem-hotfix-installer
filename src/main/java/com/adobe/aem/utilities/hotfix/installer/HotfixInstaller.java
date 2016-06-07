@@ -33,7 +33,6 @@ import java.util.List;
 public class HotfixInstaller {
 
     private static Logger log = LogManager.getLogger(HotfixInstaller.class.getName());
-    private static List<Crx.Response.Data.Packages.Package> currentPackagesList = null;
 
     public static void main(String[] args) {
 
@@ -94,7 +93,7 @@ public class HotfixInstaller {
             HFInstallerHelper hfInstallerHelper = new HFInstallerHelper( httpHost, credentials );
             hfInstallerHelper.setBasePath( basePath );
 
-            currentPackagesList = hfInstallerHelper.getCurrentPackagesList();
+            List<Crx.Response.Data.Packages.Package> currentPackagesList = hfInstallerHelper.getCurrentPackagesList();
 
             if( isCheckRun ){
                 hfInstallerHelper.checkCurrentInstalledHotfixes( hotfixes );
