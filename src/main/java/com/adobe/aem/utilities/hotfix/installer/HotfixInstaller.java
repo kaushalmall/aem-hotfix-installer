@@ -3,9 +3,8 @@ package com.adobe.aem.utilities.hotfix.installer;
 import com.adobe.aem.utilities.hotfix.installer.jaxb.packages.object.Crx;
 import com.adobe.aem.utilities.hotfix.installer.utility.Config;
 import com.adobe.aem.utilities.hotfix.installer.utility.Constants;
-import com.adobe.aem.utilities.hotfix.installer.utility.Utils;
+import com.adobe.aem.utilities.hotfix.installer.utility.HFInstallerHelper;
 import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -22,7 +21,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by kmall.
@@ -35,22 +33,34 @@ import java.util.Scanner;
 public class HotfixInstaller {
 
     private static Logger log = LogManager.getLogger(HotfixInstaller.class.getName());
+    private static List<Crx.Response.Data.Packages.Package> currentPackagesList = null;
 
     public static void main(String[] args) {
 
         boolean isCheckRun = false;
+        boolean isSilent = false;
+
+        String basePath = HotfixInstaller.class.getResource( "." ).getPath();
 
         try {
 
             if( args != null && args.length == 1 ){
-                Config.loadProperties( args[0] );
+
+                basePath = args[0];
+
+                Config.loadProperties( basePath );
             } else if( args != null && args.length == 2 ){
-                Config.loadProperties( args[0] );
+                basePath = args[0];
+                Config.loadProperties( basePath );
 
                 String runFlag = args[1];
 
                 if( runFlag.equalsIgnoreCase( "check" ) ){
                     isCheckRun = true;
+                }
+
+                if( runFlag.equalsIgnoreCase( "silent" ) ){
+                    isSilent = true;
                 }
 
             } else {
@@ -64,6 +74,14 @@ public class HotfixInstaller {
             String installPackages = Config.properties.getString(Constants.INSTALL_PACKAGES);
             List<String> hotfixes = new ArrayList<String>(Arrays.asList(Config.properties.getString(Constants.HOTFIXES).split(",")));
 
+            int maxNumberOfRetries = 0;
+            int maxWaitTimeMS = 0;
+
+            if( isSilent ){
+                maxNumberOfRetries = Integer.parseInt( Config.properties.getString( Constants.MAX_RETRIES ) );
+                maxWaitTimeMS = Integer.parseInt( Config.properties.getString( Constants.MAX_TIMEOUT ) );
+            }
+
             log.info("host: " + host);
             log.info("port: " + port);
             log.info("username: " + userName);
@@ -73,18 +91,42 @@ public class HotfixInstaller {
             HttpHost httpHost = new HttpHost(host, Integer.parseInt(port));
             Credentials credentials = new UsernamePasswordCredentials(userName, password);
 
-            List<Crx.Response.Data.Packages.Package> currentPackagesList =
-                    Utils.getCurrentHFList( Utils.setupClient( credentials ), httpHost );
+            HFInstallerHelper hfInstallerHelper = new HFInstallerHelper( httpHost, credentials );
+            hfInstallerHelper.setBasePath( basePath );
+
+            currentPackagesList = hfInstallerHelper.getCurrentPackagesList();
 
             if( isCheckRun ){
-                Utils.checkCurrentInstalledHotfixes( currentPackagesList, hotfixes );
+                hfInstallerHelper.checkCurrentInstalledHotfixes( hotfixes );
                 return;
             }
 
             for (String hfName : hotfixes) {
 
-                HttpClient httpClient = Utils.setupClient(credentials);
-                processHF(hfName, httpHost, installPackages, httpClient);
+                if( isSilent ){
+
+                    boolean isSafeToInstallPackage = false;
+
+                    int currentRetries = 0;
+
+                    while( !isSafeToInstallPackage && currentRetries <= maxNumberOfRetries ) {
+                        isSafeToInstallPackage = hfInstallerHelper.isSafeToInstallPackage();
+                        currentRetries++;
+                        if( !isSafeToInstallPackage ){
+                            System.out.print( Constants.CRX_PACKMGR_INSTALL_STATUS_JSP + " page says there is something being installed. Retrying in " + maxWaitTimeMS + " ms.");
+                            Thread.sleep( maxWaitTimeMS );
+                        }
+                    }
+
+                    if( isSafeToInstallPackage ){
+                        processHF( hfInstallerHelper, hfName, installPackages, isSilent);
+                    }
+
+                } else {
+                    processHF( hfInstallerHelper, hfName, installPackages, isSilent );
+                }
+
+
             }
 
             log.info("Finished!");
@@ -94,47 +136,27 @@ public class HotfixInstaller {
         }
     }
 
-    private static boolean promptKeyInput(String hfName) {
-        boolean userFlag = false;
-        System.out.println("\n Do you want to install " + hfName + "? \n Please check the logs, make sure the previous HF installed correctly. \n Press \"Y\" to install or press \"N\" to skip.");
-        Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
-        if (StringUtils.isNotBlank(userInput)) {
-            if (userInput.equalsIgnoreCase("y") || userInput.equalsIgnoreCase("yes")) {
-                userFlag = true;
-            } else if (userInput.equalsIgnoreCase("n") || userInput.equalsIgnoreCase("no")) {
-                userFlag = false;
-            } else {
-                System.out.println("Incorrect input, please enter a valid input.");
-                userFlag = promptKeyInput(hfName);
-            }
-        } else {
-            System.out.println("Incorrect input, please enter a valid input.");
-            userFlag = promptKeyInput(hfName);
-        }
 
-        return userFlag;
-    }
-
-    private synchronized static void processHF(String hfName, HttpHost httpHost, String installPackages, HttpClient httpClient) throws IOException {
+    private synchronized static void processHF(HFInstallerHelper hfInstallerHelper, String hfName, String installPackages, boolean isSilent) throws IOException {
 
         if (StringUtils.isNotEmpty(hfName)) {
-            if (promptKeyInput(hfName)) {
 
-                System.out.println("Now installing " + hfName);
+            System.out.println("Now processing " + hfName);
 
-                PostMethod postMethod = new PostMethod(httpHost.toString() + Constants.CRX_PACKMGR_SERVICE_JSP);
+            if (hfInstallerHelper.promptKeyInput(hfName, isSilent)) {
 
-                String hfPath = HotfixInstaller.class.getResource("/" + hfName).getFile();
+                PostMethod postMethod = new PostMethod(hfInstallerHelper.getHttpHost().toString() + Constants.CRX_PACKMGR_SERVICE_JSP);
+
+                String hfPath = hfInstallerHelper.getPackagePath( hfName );
 
                 if (StringUtils.isNotEmpty(hfPath)) {
-                    Part[] parts = Utils.setupParts(hfPath, installPackages);
+                    Part[] parts = hfInstallerHelper.setupParts(hfPath, installPackages);
 
                     MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(parts, postMethod.getParams());
 
                     postMethod.setRequestEntity(multipartRequestEntity);
 
-                    httpClient.executeMethod(postMethod);
+                    hfInstallerHelper.getHttpClient().executeMethod(postMethod);
 
                     InputStream responseBody = postMethod.getResponseBodyAsStream();
 
