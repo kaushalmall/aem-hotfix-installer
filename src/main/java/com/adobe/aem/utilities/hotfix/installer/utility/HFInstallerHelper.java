@@ -130,14 +130,15 @@ public class HFInstallerHelper {
             JAXBElement<Crx> crxJAXBElement = jaxbUnmarshaller.unmarshal(new StreamSource(inputStream), Crx.class);
             Crx lsResponseObject = crxJAXBElement.getValue();
 
-            Crx.Response.Data data = lsResponseObject.getResponse().getData();
+            if( lsResponseObject != null ){
+                Crx.Response.Data data = lsResponseObject.getResponse().getData();
 
-            if( data != null ){
-                Crx.Response.Data.Packages dataPackages = data.getPackages();
-                currentPackagesList = dataPackages.getPackage();
-                this.currentPackages = currentPackagesList;
+                if( data != null ){
+                    Crx.Response.Data.Packages dataPackages = data.getPackages();
+                    currentPackagesList = dataPackages.getPackage();
+                    this.currentPackages = currentPackagesList;
+                }
             }
-
         }
 
         return this.currentPackages;

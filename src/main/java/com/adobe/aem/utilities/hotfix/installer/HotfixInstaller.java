@@ -87,6 +87,12 @@ public class HotfixInstaller {
             log.info("password: " + password);
             log.info("hotfixes: " + hotfixes.toString());
 
+            System.out.println("host: " + host);
+            System.out.println("port: " + port);
+            System.out.println("username: " + userName);
+            System.out.println("password: " + password);
+            System.out.println("hotfixes: " + hotfixes.toString());
+
             HttpHost httpHost = new HttpHost(host, Integer.parseInt(port));
             Credentials credentials = new UsernamePasswordCredentials(userName, password);
 
@@ -124,8 +130,6 @@ public class HotfixInstaller {
                 } else {
                     processHF( hfInstallerHelper, hfName, installPackages, isSilent );
                 }
-
-
             }
 
             log.info("Finished!");
@@ -144,26 +148,33 @@ public class HotfixInstaller {
 
             if (hfInstallerHelper.promptKeyInput(hfName, isSilent)) {
 
-                PostMethod postMethod = new PostMethod(hfInstallerHelper.getHttpHost().toString() + Constants.CRX_PACKMGR_SERVICE_JSP);
+                boolean isPackageInstalled = hfInstallerHelper.isPackageInstalled( hfName );
 
-                String hfPath = hfInstallerHelper.getPackagePath( hfName );
+                if( isPackageInstalled ){
+                    System.err.println( "Hotfix: " + hfName + " is installed, skipping" );
+                    return;
+                } else {
+                    PostMethod postMethod = new PostMethod(hfInstallerHelper.getHttpHost().toString() + Constants.CRX_PACKMGR_SERVICE_JSP);
 
-                if (StringUtils.isNotEmpty(hfPath)) {
-                    Part[] parts = hfInstallerHelper.setupParts(hfPath, installPackages);
+                    String hfPath = hfInstallerHelper.getPackagePath( hfName );
 
-                    MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(parts, postMethod.getParams());
+                    if (StringUtils.isNotEmpty(hfPath)) {
+                        Part[] parts = hfInstallerHelper.setupParts(hfPath, installPackages);
 
-                    postMethod.setRequestEntity(multipartRequestEntity);
+                        MultipartRequestEntity multipartRequestEntity = new MultipartRequestEntity(parts, postMethod.getParams());
 
-                    hfInstallerHelper.getHttpClient().executeMethod(postMethod);
+                        postMethod.setRequestEntity(multipartRequestEntity);
 
-                    InputStream responseBody = postMethod.getResponseBodyAsStream();
+                        hfInstallerHelper.getHttpClient().executeMethod(postMethod);
 
-                    StringWriter writer = new StringWriter();
-                    IOUtils.copy(responseBody, writer, "UTF-8");
-                    String responseString = writer.toString();
+                        InputStream responseBody = postMethod.getResponseBodyAsStream();
 
-                    log.info(responseString);
+                        StringWriter writer = new StringWriter();
+                        IOUtils.copy(responseBody, writer, "UTF-8");
+                        String responseString = writer.toString();
+
+                        log.info(responseString);
+                    }
                 }
             }
         }
