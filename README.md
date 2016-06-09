@@ -39,3 +39,6 @@ hotfixes=acs-aem-commons-content-2.1.0-min.zip,cq-6.1.0-hotfix-9104-1.0.zip
 
 * To run in silent mode execute using the command below. I would recommend using the silent mode **_ONLY_** on non production environments.
    * Example `java -jar aem-hotfix-installer-1.2-SNAPSHOT.jar /path/to/directory/containing/config.properties/and/hotfix/packages silent`
+
+### Logging
+* It creates a hotfix_installer.log file that logs all the package install details.
