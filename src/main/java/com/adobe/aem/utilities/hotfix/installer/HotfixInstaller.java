@@ -42,7 +42,7 @@ public class HotfixInstaller {
 
     public static void main(String[] args) {
 
-        String basePath = HotfixInstaller.class.getResource( "." ).getPath();
+        String basePath = "";
 
         try {
 
@@ -66,7 +66,8 @@ public class HotfixInstaller {
                 }
 
             } else {
-                Config.loadProperties();
+                System.out.println( "Please provide valid arguments [/path/to/folder/containing/files] [check|silent]" );
+                return;
             }
 
             final String host = Config.properties.getString(Constants.HOST);
@@ -111,14 +112,14 @@ public class HotfixInstaller {
             executor.execute(() -> {
                 try {
                     processPackages(installPackages, hotfixes, hfInstallerHelper);
+                    System.out.println( "Finished Processing!" );
+                    log.info("Finished!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             });
-
-            log.info("Finished!");
 
         } catch (Exception e) {
             e.printStackTrace();

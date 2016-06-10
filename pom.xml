@@ -6,7 +6,7 @@
 
     <groupId>com.adobe.aem.utilities</groupId>
     <artifactId>aem-hotfix-installer</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
