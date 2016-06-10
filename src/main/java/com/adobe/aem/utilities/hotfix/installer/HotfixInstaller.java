@@ -21,6 +21,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by kmall.
@@ -33,11 +35,12 @@ import java.util.List;
 public class HotfixInstaller {
 
     private static Logger log = LogManager.getLogger(HotfixInstaller.class.getName());
+    private static boolean isCheckRun = false;
+    private static boolean isSilentRun = false;
+    private static int maxNumberOfRetries = 0;
+    private static int maxWaitTimeMS = 0;
 
     public static void main(String[] args) {
-
-        boolean isCheckRun = false;
-        boolean isSilent = false;
 
         String basePath = HotfixInstaller.class.getResource( "." ).getPath();
 
@@ -59,24 +62,21 @@ public class HotfixInstaller {
                 }
 
                 if( runFlag.equalsIgnoreCase( "silent" ) ){
-                    isSilent = true;
+                    isSilentRun = true;
                 }
 
             } else {
                 Config.loadProperties();
             }
 
-            String host = Config.properties.getString(Constants.HOST);
-            String port = Config.properties.getString(Constants.PORT);
-            String userName = Config.properties.getString(Constants.USER_NAME);
-            String password = Config.properties.getString(Constants.PASSWORD);
-            String installPackages = Config.properties.getString(Constants.INSTALL_PACKAGES);
-            List<String> hotfixes = new ArrayList<String>(Arrays.asList(Config.properties.getString(Constants.HOTFIXES).split(",")));
+            final String host = Config.properties.getString(Constants.HOST);
+            final String port = Config.properties.getString(Constants.PORT);
+            final String userName = Config.properties.getString(Constants.USER_NAME);
+            final String password = Config.properties.getString(Constants.PASSWORD);
+            final String installPackages = Config.properties.getString(Constants.INSTALL_PACKAGES);
+            final List<String> hotfixes = new ArrayList<String>(Arrays.asList(Config.properties.getString(Constants.HOTFIXES).split(",")));
 
-            int maxNumberOfRetries = 0;
-            int maxWaitTimeMS = 0;
-
-            if( isSilent ){
+            if( isSilentRun ){
                 maxNumberOfRetries = Integer.parseInt( Config.properties.getString( Constants.MAX_RETRIES ) );
                 maxWaitTimeMS = Integer.parseInt( Config.properties.getString( Constants.MAX_TIMEOUT ) );
             }
@@ -106,31 +106,17 @@ public class HotfixInstaller {
                 return;
             }
 
-            for (String hfName : hotfixes) {
-
-                if( isSilent ){
-
-                    boolean isSafeToInstallPackage = false;
-
-                    int currentRetries = 0;
-
-                    while( !isSafeToInstallPackage && currentRetries <= maxNumberOfRetries ) {
-                        isSafeToInstallPackage = hfInstallerHelper.isSafeToInstallPackage();
-                        currentRetries++;
-                        if( !isSafeToInstallPackage ){
-                            System.out.print( Constants.CRX_PACKMGR_INSTALL_STATUS_JSP + " page says there is something being installed. Retrying in " + maxWaitTimeMS + " ms.");
-                            Thread.sleep( maxWaitTimeMS );
-                        }
-                    }
-
-                    if( isSafeToInstallPackage ){
-                        processHF( hfInstallerHelper, hfName, installPackages, isSilent);
-                    }
-
-                } else {
-                    processHF( hfInstallerHelper, hfName, installPackages, isSilent );
+            ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+            
+            executor.execute(() -> {
+                try {
+                    processPackages(installPackages, hotfixes, hfInstallerHelper);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }
+            });
 
             log.info("Finished!");
 
@@ -139,8 +125,36 @@ public class HotfixInstaller {
         }
     }
 
+    private static void processPackages(String installPackages, List<String> hotfixes, HFInstallerHelper hfInstallerHelper) throws IOException, InterruptedException {
+        for (String hfName : hotfixes) {
 
-    private synchronized static void processHF(HFInstallerHelper hfInstallerHelper, String hfName, String installPackages, boolean isSilent) throws IOException {
+            if( isSilentRun ){
+
+                boolean isSafeToInstallPackage = false;
+
+                int currentRetries = 0;
+
+                while( !isSafeToInstallPackage && currentRetries <= maxNumberOfRetries ) {
+                    isSafeToInstallPackage = hfInstallerHelper.isSafeToInstallPackage();
+                    currentRetries++;
+                    if( !isSafeToInstallPackage ){
+                        System.out.print( Constants.CRX_PACKMGR_INSTALL_STATUS_JSP + " page says there is something being installed. Retrying in " + maxWaitTimeMS + " ms.");
+                        Thread.sleep( maxWaitTimeMS );
+                    }
+                }
+
+                if( isSafeToInstallPackage ){
+                    processPackage( hfInstallerHelper, hfName, installPackages, isSilentRun );
+                }
+
+            } else {
+                processPackage( hfInstallerHelper, hfName, installPackages, isSilentRun );
+            }
+        }
+    }
+
+
+    private synchronized static void processPackage(HFInstallerHelper hfInstallerHelper, String hfName, String installPackages, boolean isSilent) throws IOException {
 
         if (StringUtils.isNotEmpty(hfName)) {
 
