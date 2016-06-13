@@ -121,6 +121,8 @@ public class HotfixInstaller {
                 }
             });
 
+            executor.shutdown();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
