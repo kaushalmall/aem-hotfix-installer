@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="HotFixInstaller" packages="">
     <Appenders>
-        <RollingFile name="fileLog" fileName="hotfix_installer.log" filePattern="app-%d{yyyy-MM-dd}.log">
+        <RollingFile name="fileLog" fileName="hotfix_installer.log" filePattern="hotfix_installer-%d{yyyy-MM-dd}.log">
             <PatternLayout>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %c{1} - %msg%n</pattern>
             </PatternLayout>
@@ -14,6 +14,6 @@
         <Root level="DEBUG">
             <AppenderRef ref="fileLog"/>
         </Root>
-        <logger name="com.ko.cms.freestyle" level="DEBUG"/>
+        <logger name="com.adobe.aem.utilities.hotfix.installer" level="DEBUG"/>
     </Loggers>
 </Configuration>

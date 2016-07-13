@@ -13,13 +13,18 @@ public class Constants {
     public static final String PORT_4502 = "4502";
     public static final String ADMIN = "admin";
     public static final String HOTFIXES = "hotfixes";
+    public static final String PROPERTIES_FILENAME = "config";
+    public static final String INSTALL_PACKAGES = "installPackages";
+    public static final String MAX_RETRIES = "maxNumberOfRetries";
+    public static final String MAX_TIMEOUT = "maxWaitTimeMS";
+
     public static final String CRX_PACKMGR_SERVICE_JSP = "/crx/packmgr/service.jsp";
+    public static final String CRX_PACKMGR_INSTALL_STATUS_JSP = "/crx/packmgr/installstatus.jsp";
+    public static final String CRX_PACKMGR_LS = CRX_PACKMGR_SERVICE_JSP + "?cmd=ls";
     public static final String NAME = "name";
     public static final String FORCE = "force";
     public static final String INSTALL = "install";
     public static final String FILE = "file";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-    public static final String INSTALL_PACKAGES = "installPackages";
-    public static final String PROPERTIES_FILENAME = "config";
 }
