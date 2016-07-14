@@ -7,7 +7,12 @@ package com.adobe.aem.utilities.hotfix.installer.ui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableView;
 
 /**
  * FXML Controller class
@@ -16,6 +21,13 @@ import javafx.fxml.Initializable;
  */
 public class PackageSelectPanelController implements Initializable {
 
+    @FXML
+    private ComboBox<?> recommendedPackages;
+    @FXML
+    private TextField searchTextField;
+    @FXML
+    private TreeTableView<?> searchResultsTable;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +35,13 @@ public class PackageSelectPanelController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void searchAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void addSelectedAction(ActionEvent event) {
+    }
     
 }

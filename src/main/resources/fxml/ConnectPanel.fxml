@@ -8,11 +8,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 
-<fx:root maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectController">
+<fx:root maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectPanelController">
    <children>
       <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Connect" />
       <GridPane hgap="5.0" vgap="5.0">
@@ -49,10 +49,10 @@
             </Label>
             <TextField fx:id="hostField" promptText="localhost:4502" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
             <CheckBox fx:id="sslCheckbox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1"  GridPane.rowIndex="2" />
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS"/>
-            <TextField fx:id="usernameField1" promptText="admin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-            <PasswordField fx:id="passwordField1" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+            <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+            <TextField fx:id="adobeIdField" promptText="admin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
+            <PasswordField fx:id="adobePasswordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>
