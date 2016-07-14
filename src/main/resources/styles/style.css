@@ -16,11 +16,13 @@
 	-fx-padding:0px 0px 10px 0px;
 }
 
-.not-connected {
+.not-connected-aem .aemConnectionVerificationLabel, 
+.not-connected-pkg .pkgConnectionVerificationLabel
+{
 	-fx-background-color:rgb(255,200,200);
 }
 
-.not-connected .h1 {
+.not-connected-aem .h1, .not-connected-pkg .h1 {
 	-fx-text-fill:rgb(255,64,64);
 	-fx-effect: dropshadow(gaussian, rgba(128,0,0,0.2), 5, 0.2,2,2);
 }

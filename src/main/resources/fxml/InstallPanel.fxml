@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.InstallPanelController">
+    <children>
+        <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Install" />
+        <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+                <Button mnemonicParsing="false" text="Remove selected" />
+            </items>
+        </ToolBar>
+        <TreeTableView prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TreeTableColumn maxWidth="1.7976931348623157E308" text="Package" />
+                <TreeTableColumn maxWidth="1.7976931348623157E308" prefWidth="115.0" text="Details" />
+            </columns>
+        </TreeTableView>
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <center>
+                <Button mnemonicParsing="false" prefHeight="66.0" prefWidth="99.0" styleClass="go-button" text="GO!" BorderPane.alignment="CENTER" />
+            </center>
+        </BorderPane>
+    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</fx:root>

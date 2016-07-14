@@ -2,27 +2,18 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="680.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.InstallerAppController">
@@ -46,120 +37,16 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="not-connected" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Connect" />
-                        <GridPane hgap="5.0" vgap="5.0">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="163.0" minWidth="74.0" />
-                              <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <Label text="%hostname" />
-                              <Label text="%useSSL" GridPane.rowIndex="1" />
-                              <Label text="%username" GridPane.rowIndex="2" />
-                              <Label text="%password" GridPane.rowIndex="3" />
-                              <TextField fx:id="hostField" promptText="localhost:4502" GridPane.columnIndex="1" />
-                              <CheckBox fx:id="sslCheckbox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField fx:id="usernameField1" promptText="admin" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <PasswordField fx:id="passwordField1" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label text="%adobeid" GridPane.rowIndex="5" />
-                              <Label text="%password" GridPane.rowIndex="6" />
-                              <Label fx:id="connectionVerificationLabel" prefHeight="17.0" prefWidth="163.0" text="AEM login not verified" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
-                              <Label fx:id="connectionVerificationLabel1" prefHeight="17.0" prefWidth="163.0" text="Pkg share not connected" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
-                           </children>
-                        </GridPane>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
+                  <fx:include source="ConnectPanel.fxml" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Packages" />
-                        <Accordion>
-                          <panes>
-                            <TitledPane animated="false" text="Recommended">
-                              <content>
-                                    <VBox>
-                                       <children>
-                                          <ComboBox prefWidth="150.0" promptText="6.2" />
-                                       </children>
-                                    </VBox>
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Search">
-                                 <content>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <TextField promptText="By Number or keywords" />
-                                          <Label styleClass="help-text" text="use comma (,) to separate multiple entries (e.g. 1234,HF9000,...)" wrapText="true" />
-                                       </children>
-                                    </VBox>
-                                 </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                        <ToolBar prefHeight="40.0" prefWidth="200.0">
-                          <items>
-                              <Button mnemonicParsing="false" text="Search" />
-                            <Button mnemonicParsing="false" text="Add selected" />
-                          </items>
-                        </ToolBar>
-                        <TreeTableView prefHeight="200.0" prefWidth="200.0">
-                          <columns>
-                            <TreeTableColumn prefWidth="75.0" text="Package" />
-                            <TreeTableColumn prefWidth="155.0" text="Details" />
-                          </columns>
-                        </TreeTableView>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
+                  <fx:include source="PackageSelectPanel.fxml" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Install" />
-                        <ToolBar prefHeight="40.0" prefWidth="200.0">
-                           <items>
-                              <Button mnemonicParsing="false" text="Remove selected" />
-                           </items>
-                        </ToolBar>
-                        <TreeTableView prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TreeTableColumn maxWidth="1.7976931348623157E308" text="Package" />
-                              <TreeTableColumn maxWidth="1.7976931348623157E308" prefWidth="115.0" text="Details" />
-                           </columns>
-                        </TreeTableView>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <center>
-                              <Button mnemonicParsing="false" prefHeight="66.0" prefWidth="99.0" styleClass="go-button" text="GO!" BorderPane.alignment="CENTER" />
-                           </center>
-                        </BorderPane>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
+                  <fx:include source="InstallPanel.fxml" />
                </children>
             </HBox>
          </children>
