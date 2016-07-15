@@ -37,7 +37,7 @@ public class InstallerUIApp extends Application {
         Scene scene = new Scene(root);
 //        scene.getStylesheets().add("/styles/style.css");
 
-        primaryStage.setTitle("AEM Installer");
+        primaryStage.setTitle("AEM Hotfix Installer");
         primaryStage.setScene(scene);
         primaryStage.show();
 
