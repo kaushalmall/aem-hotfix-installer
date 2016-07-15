@@ -1,7 +1,3 @@
-/*
- * Empty Stylesheet file.
- */
-
 .mainFxmlClass {
 
 }
@@ -20,6 +16,18 @@
 .not-connected-pkg .pkgConnectionVerificationLabel
 {
 	-fx-background-color:rgb(255,200,200);
+}
+
+.connected-aem .aemConnectionVerificationLabel, 
+.connected-pkg .pkgConnectionVerificationLabel
+{
+	-fx-background-color:rgb(200,255,200);
+}
+
+.connecting-aem .aemConnectionVerificationLabel, 
+.connecting-pkg .pkgConnectionVerificationLabel
+{
+	-fx-background-color:rgb(255,255,200);
 }
 
 .not-connected-aem .h1, .not-connected-pkg .h1 {

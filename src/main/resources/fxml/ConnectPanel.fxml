@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectPanelController">
+<VBox fx:id="connectPanel" maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectPanelController">
    <children>
       <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Connect" />
       <GridPane hgap="5.0" vgap="5.0">
@@ -31,12 +31,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="%hostname" />
-            <Label text="%useSSL" GridPane.rowIndex="1" />
-            <Label text="%username" GridPane.rowIndex="2" />
-            <Label text="%password" GridPane.rowIndex="3" />
-            <Label fx:id="aemConnectionVerificationLabel" text="%adobeid" GridPane.rowIndex="5" />
-            <Label text="%password" GridPane.rowIndex="6" />
+            <Label text="AEM Host" />
+            <Label text="HTTPS?" GridPane.rowIndex="1" />
+            <Label text="AEM Login" GridPane.rowIndex="2" />
+            <Label text="Password" GridPane.rowIndex="3" />
+            <Label fx:id="aemConnectionVerificationLabel" text="Adobe ID" GridPane.rowIndex="5" />
+            <Label text="Password" GridPane.rowIndex="6" />
             <Label fx:id="connectionVerificationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="21.0" styleClass="aemConnectionVerificationLabel" text="AEM login not verified" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                 <padding>
                   <Insets bottom="2.0" top="2.0" />
@@ -63,4 +63,4 @@
       <String fx:value="not-connected-pkg" />
       <String fx:value="not-connected-aem" />
    </styleClass>
-</fx:root>
+</VBox>

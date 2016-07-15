@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.InstallPanelController">
+<VBox maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.InstallPanelController">
     <children>
         <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Install" />
         <ToolBar prefHeight="40.0" prefWidth="200.0">
@@ -33,4 +33,4 @@
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
-</fx:root>
+</VBox>

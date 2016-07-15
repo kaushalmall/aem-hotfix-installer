@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root styleClass="mainFxmlClass" stylesheets="@../styles/style.css" type="VBox" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.PackageSelectPanelController">
+<VBox styleClass="mainFxmlClass" stylesheets="@../styles/style.css" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.PackageSelectPanelController">
     <children>
         <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Packages" />
         <Accordion>
@@ -55,4 +55,4 @@
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
-</fx:root>
+</VBox>
