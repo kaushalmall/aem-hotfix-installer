@@ -46,7 +46,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class AuthHandler {
-    private static final String TEST_PAGE = "/content.json";
+    private String testPage = "/content.json";
 
     public final Login model;
 
@@ -66,6 +66,10 @@ public class AuthHandler {
         model.statusMessageProperty().set("Incomplete fields");
         model.loginConfirmedProperty().set(false);
         model.loginErrorProperty().set(true);
+    }
+    
+    public void setTestPage(String page) {
+        testPage = page;
     }
 
     public String getUrlBase() {
@@ -137,7 +141,7 @@ public class AuthHandler {
                 return;
             }
                                 
-            String url = getUrlBase() + TEST_PAGE;
+            String url = getUrlBase() + testPage;
             URL testUrl = new URL(url);
             InetAddress address = InetAddress.getByName(testUrl.getHost());
             if (address == null || isDnsRedirect(address)) {

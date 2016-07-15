@@ -42,7 +42,8 @@ public class ConnectPanelController implements Initializable {
     private TextField adobeIdField;
     @FXML
     private PasswordField adobePasswordField;
-    private String PACKAGE_SHARE_HOST = "";
+    private String PACKAGE_SHARE_HOST = "www.adobeaemcloud.com";
+    private String PACKAGE_SHARE_URI = "/content/packageshare.html";
     @FXML
     private VBox connectPanel;
 
@@ -55,11 +56,13 @@ public class ConnectPanelController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         aemHandler = new AuthHandler(hostField.textProperty(), sslCheckbox.selectedProperty(), usernameField.textProperty(), passwordField.textProperty());
-        pkgHandler = new AuthHandler(new ReadOnlyStringWrapper(PACKAGE_SHARE_HOST), new ReadOnlyBooleanWrapper(true), adobeIdField.textProperty(), adobePasswordField.textProperty());
         Login aemLogin = aemHandler.getLogin();
         connectionVerificationLabel.textProperty().bind(aemLogin.statusMessageProperty());
         aemLogin.loginConfirmedProperty().addListener((p, o, n) -> updateConnectionStyles());
         aemLogin.loginErrorProperty().addListener((p, o, n) -> updateConnectionStyles());
+ 
+        pkgHandler = new AuthHandler(new ReadOnlyStringWrapper(PACKAGE_SHARE_HOST), new ReadOnlyBooleanWrapper(true), adobeIdField.textProperty(), adobePasswordField.textProperty());
+        pkgHandler.setTestPage(PACKAGE_SHARE_URI);
         Login pkgLogin = pkgHandler.getLogin();
         pkgConnectionVerificationLabel.textProperty().bind(pkgLogin.statusMessageProperty());
         pkgLogin.loginConfirmedProperty().addListener((p, o, n) -> updateConnectionStyles());
