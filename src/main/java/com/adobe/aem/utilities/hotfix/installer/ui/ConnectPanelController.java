@@ -23,11 +23,11 @@ import javafx.scene.layout.VBox;
  * @author brobert
  */
 public class ConnectPanelController implements Initializable {
+    private final String PACKAGE_SHARE_HOST = "www.adobeaemcloud.com";
+    private final String PACKAGE_SHARE_URI = "/content/packageshare.html";
 
     @FXML
     private Label aemConnectionVerificationLabel;
-    @FXML
-    private Label connectionVerificationLabel;
     @FXML
     private Label pkgConnectionVerificationLabel;
     @FXML
@@ -42,8 +42,6 @@ public class ConnectPanelController implements Initializable {
     private TextField adobeIdField;
     @FXML
     private PasswordField adobePasswordField;
-    private String PACKAGE_SHARE_HOST = "www.adobeaemcloud.com";
-    private String PACKAGE_SHARE_URI = "/content/packageshare.html";
     @FXML
     private VBox connectPanel;
 
@@ -57,7 +55,7 @@ public class ConnectPanelController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         aemHandler = new AuthHandler(hostField.textProperty(), sslCheckbox.selectedProperty(), usernameField.textProperty(), passwordField.textProperty());
         Login aemLogin = aemHandler.getLogin();
-        connectionVerificationLabel.textProperty().bind(aemLogin.statusMessageProperty());
+        aemConnectionVerificationLabel.textProperty().bind(aemLogin.statusMessageProperty());
         aemLogin.loginConfirmedProperty().addListener((p, o, n) -> updateConnectionStyles());
         aemLogin.loginErrorProperty().addListener((p, o, n) -> updateConnectionStyles());
  
