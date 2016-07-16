@@ -2,15 +2,16 @@ package com.adobe.aem.utilities.hotfix.installer.utility;
 
 import com.adobe.aem.utilities.hotfix.installer.model.ProductHotfixes;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
@@ -39,11 +40,9 @@ public class HotfixExtractor {
 
     public Stream<String> getRawHotfixPage() {
         try {
-            // TODO: Implement actual http read
-            File f = new File("/tmp/hotfixes.html");
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(f));
-            return bufferedReader.lines();
-        } catch (FileNotFoundException ex) {
+            CloseableHttpResponse response = client.execute(new HttpGet("https://helpx.adobe.com/experience-manager/kb/index/hotfixes.html"));
+            return new BufferedReader(new InputStreamReader(response.getEntity().getContent())).lines();
+        } catch (IOException ex) {
             Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
             return Stream.empty();
         }
@@ -54,7 +53,7 @@ public class HotfixExtractor {
             return false;
         }
         String href = getHref(linkHtml);
-        return href.startsWith("https://helpx.adobe.com/content/help/en/experience-manager/kb/");
+        return href.startsWith("/content/help/en/experience-manager/kb/");
     }
 
     private ProductHotfixes extractHotfixPage(String linkHtml) {
