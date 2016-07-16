@@ -21,6 +21,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 public class HotfixExtractor {
 
     private final CloseableHttpClient client;
+    public static final String HELP_SITE = "https://helpx.adobe.com";
 
     public HotfixExtractor() {
         client = ConnectionManager.getInstance().getAuthenticatedClient(null, null);
@@ -40,7 +41,7 @@ public class HotfixExtractor {
 
     public Stream<String> getRawHotfixPage() {
         try {
-            CloseableHttpResponse response = client.execute(new HttpGet("https://helpx.adobe.com/experience-manager/kb/index/hotfixes.html"));
+            CloseableHttpResponse response = client.execute(new HttpGet(HELP_SITE+"/experience-manager/kb/index/hotfixes.html"));
             return new BufferedReader(new InputStreamReader(response.getEntity().getContent())).lines();
         } catch (IOException ex) {
             Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +64,7 @@ public class HotfixExtractor {
         linkText = linkText.replace(" hotfixes", "");
         ProductHotfixes hotfixes = new ProductHotfixes();
         hotfixes.setProductVersion(linkText);
-        hotfixes.setPageHref(getHref(linkHtml));
+        hotfixes.setPageHref(HELP_SITE + getHref(linkHtml));
         return hotfixes;
     }
 
