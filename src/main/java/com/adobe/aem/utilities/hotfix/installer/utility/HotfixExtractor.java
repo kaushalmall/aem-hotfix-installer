@@ -61,7 +61,9 @@ public class HotfixExtractor {
         try {
             String uri = HELP_SITE + "/experience-manager/kb/index/hotfixes.html";
             CloseableHttpResponse response = client.execute(new HttpGet(uri));
-            return Jsoup.parse(response.getEntity().getContent(), null, uri);
+            Document doc = Jsoup.parse(response.getEntity().getContent(), null, uri);
+            response.close();
+            return doc;
         } catch (IOException ex) {
             Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
             return new Document("");
@@ -97,11 +99,13 @@ public class HotfixExtractor {
         try {
             String uri = productVersion.getPageHref();
             CloseableHttpResponse response = client.execute(new HttpGet(uri));
-            return Jsoup.parse(response.getEntity().getContent(), null, uri);
+            Document doc = Jsoup.parse(response.getEntity().getContent(), null, uri);
+            response.close();
+            return doc;
         } catch (IOException ex) {
             Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
             return new Document("");
-        }
+        } 
     }
 
     private Hotfix extractHotfix(Element hotfixLink) {
