@@ -122,7 +122,8 @@ public class HotfixExtractor {
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy", l);
     String[] removeFromDate = new String[] {
         "st, ", "st ", "nd, ", "nd ", "rd, ", "rd ", "th, " , "th ", ", "
-    }
+    };
+    
     private Calendar parseDate(String str) {
         Calendar cal = Calendar.getInstance();
         for (String remove : removeFromDate) {
