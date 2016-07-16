@@ -8,8 +8,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -45,12 +45,12 @@
                 <Button mnemonicParsing="false" onAction="#addSelectedAction" text="Add selected" />
             </items>
         </ToolBar>
-        <TreeTableView fx:id="searchResultsTable" prefHeight="200.0" prefWidth="200.0">
+        <TableView fx:id="searchResultsTable" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TreeTableColumn prefWidth="75.0" text="Package" />
-                <TreeTableColumn prefWidth="155.0" text="Details" />
+                <TableColumn prefWidth="75.0" text="Package" />
+                <TableColumn prefWidth="155.0" text="Details" />
             </columns>
-        </TreeTableView>
+        </TableView>
     </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

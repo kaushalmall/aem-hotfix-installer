@@ -1,18 +1,24 @@
 package com.adobe.aem.utilities.hotfix.installer.utility;
 
-import com.adobe.aem.utilities.hotfix.installer.model.ProductHotfixes;
-import java.io.BufferedReader;
+import com.adobe.aem.utilities.hotfix.installer.model.Hotfix;
+import com.adobe.aem.utilities.hotfix.installer.model.ProductVersion;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -22,15 +28,16 @@ public class HotfixExtractor {
 
     private final CloseableHttpClient client;
     public static final String HELP_SITE = "https://helpx.adobe.com";
+    public static final String PACKAGE_SHARE_URL_BASE = "https://www.adobeaemcloud.com/content/marketplace";
 
     public HotfixExtractor() {
         client = ConnectionManager.getInstance().getAuthenticatedClient(null, null);
     }
 
-    public Set<ProductHotfixes> scrapeProductHotfixes() {
-        Set<ProductHotfixes> productHotfixes = new TreeSet<>();
+    public Set<ProductVersion> scrapeProductVersions() {
+        Set<ProductVersion> productHotfixes = new TreeSet<>();
         productHotfixes.addAll(
-                getRawHotfixPage()
+                getProductVersionPage().select("a").stream()
                 .filter(this::hasValidProductVersion)
                 .map(this::extractHotfixPage)
                 .collect(Collectors.toSet())
@@ -39,45 +46,93 @@ public class HotfixExtractor {
         return productHotfixes;
     }
 
-    public Stream<String> getRawHotfixPage() {
+    public Set<Hotfix> scrapeHotfixesByVersion(ProductVersion productVersion) {
+        if (productVersion.getHotfixes().isEmpty()) {
+            getHotfixListPage(productVersion)
+                    .select("a").stream()
+                    .filter(this::isHotfixLink)
+                    .map(this::extractHotfix)
+                    .collect(Collectors.toCollection(productVersion::getHotfixes));
+        }
+        return productVersion.getHotfixes();
+    }
+
+    public Document getProductVersionPage() {
         try {
-            CloseableHttpResponse response = client.execute(new HttpGet(HELP_SITE+"/experience-manager/kb/index/hotfixes.html"));
-            return new BufferedReader(new InputStreamReader(response.getEntity().getContent())).lines();
+            String uri = HELP_SITE + "/experience-manager/kb/index/hotfixes.html";
+            CloseableHttpResponse response = client.execute(new HttpGet(uri));
+            return Jsoup.parse(response.getEntity().getContent(), null, uri);
         } catch (IOException ex) {
             Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
-            return Stream.empty();
+            return new Document("");
         }
     }
 
-    private boolean hasValidProductVersion(String linkHtml) {
-        if (!linkHtml.contains("available-hotfixes")) {
+    private boolean hasValidProductVersion(Element link) {
+        String href = link.attr("href");
+        if (!href.contains("available-hotfixes")) {
             return false;
         }
-        String href = getHref(linkHtml);
         return href.startsWith("/content/help/en/experience-manager/kb/");
     }
 
-    private ProductHotfixes extractHotfixPage(String linkHtml) {
-        String linkText = getLinkText(linkHtml);
-        linkText = linkText.replace("Adobe Experience Manager", "AEM");
-        linkText = linkText.replace(" hot fixes", "");
-        linkText = linkText.replace(" hotfixes", "");
-        ProductHotfixes hotfixes = new ProductHotfixes();
+    private boolean isHotfixLink(Element link) {
+        String href = link.attr("href");
+        return href.startsWith(PACKAGE_SHARE_URL_BASE);
+    }
+
+    private ProductVersion extractHotfixPage(Element link) {
+        String linkText = link.text();
+        for (String remove : new String[]{"Adobe Experience Manager ", "AEM ", " hot fixes", " hotfixes", " recommended"}) {
+            linkText = linkText.replace(remove, "");
+        }
+        linkText = linkText.replace("Service Pack ", "SP");
+        ProductVersion hotfixes = new ProductVersion();
         hotfixes.setProductVersion(linkText);
-        hotfixes.setPageHref(HELP_SITE + getHref(linkHtml));
+        hotfixes.setPageHref(HELP_SITE + link.attr("href"));
         return hotfixes;
     }
 
-    private String getHref(String linkHtml) {
-        int startIndex = linkHtml.indexOf("href=") + 6;
-        int endIndex = linkHtml.indexOf('"', startIndex);
-        return linkHtml.substring(startIndex, endIndex);
+    private Document getHotfixListPage(ProductVersion productVersion) {
+        try {
+            String uri = productVersion.getPageHref();
+            CloseableHttpResponse response = client.execute(new HttpGet(uri));
+            return Jsoup.parse(response.getEntity().getContent(), null, uri);
+        } catch (IOException ex) {
+            Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
+            return new Document("");
+        }
     }
 
-    private String getLinkText(String linkHtml) {
-        int startHref = linkHtml.indexOf("href=") + 6;
-        int startIndex = linkHtml.indexOf("\">", startHref) + 2;
-        int endIndex = linkHtml.indexOf('<', startIndex);
-        return linkHtml.substring(startIndex, endIndex);
+    private Hotfix extractHotfix(Element hotfixLink) {
+        Hotfix hotfix = new Hotfix();
+        hotfix.setDownloadHref(hotfixLink.attr("href"));
+        hotfix.setName(hotfixLink.text());
+        Elements row = hotfixLink.parents().select("tr").first().select("td");
+        String dateStr = row.get(0).text();
+        hotfix.setDate(parseDate(dateStr));
+        if (row.size() >= 3) {
+            String description = row.get(2).text();
+            hotfix.setDescripton(description);
+        }
+        return hotfix;
+    }
+
+    Locale l = new Locale("en","us");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy", l);
+    String[] removeFromDate = new String[] {
+        "st, ", "st ", "nd, ", "nd ", "rd, ", "rd ", "th, " , "th ", ", "
+    }
+    private Calendar parseDate(String str) {
+        Calendar cal = Calendar.getInstance();
+        for (String remove : removeFromDate) {
+            str = str.replace(remove, " ");
+        }
+        try {
+            cal.setTime(dateFormat.parse(str));
+        } catch (ParseException ex) {
+            Logger.getLogger(HotfixExtractor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cal;
     }
 }
