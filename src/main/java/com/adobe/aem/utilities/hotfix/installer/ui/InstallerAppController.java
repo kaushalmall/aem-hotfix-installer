@@ -5,8 +5,10 @@
  */
 package com.adobe.aem.utilities.hotfix.installer.ui;
 
+import com.adobe.aem.utilities.hotfix.installer.HotfixInstallerService;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 /**
@@ -14,14 +16,26 @@ import javafx.fxml.Initializable;
  *
  * @author brobert
  */
-public class InstallerAppController implements Initializable {
+public class InstallerAppController extends HotfixInstallerService implements Initializable {
 
+    @FXML
+    ConnectPanelController connectController;
+    
+    @FXML
+    PackageSelectPanelController packageSelectController;
+
+    @FXML
+    InstallPanelController installController;
+       
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
+    @FXML
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        HotfixInstallerService.registerInstance(this);
     }    
     
 }

@@ -42,11 +42,11 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <fx:include source="ConnectPanel.fxml" />
+                  <fx:include fx:id="connect" source="ConnectPanel.fxml"/>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <fx:include source="PackageSelectPanel.fxml" />
+                  <fx:include fx:id="packageSelect" source="PackageSelectPanel.fxml" />
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <fx:include source="InstallPanel.fxml" />
+                  <fx:include fx:id="install" source="InstallPanel.fxml" />
                </children>
             </HBox>
          </children>

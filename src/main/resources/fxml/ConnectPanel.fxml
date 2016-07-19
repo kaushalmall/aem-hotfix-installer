@@ -6,61 +6,66 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="connectPanel" maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectPanelController">
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adobe.aem.utilities.hotfix.installer.ui.ConnectPanelController">
    <children>
-      <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Connect" />
-      <GridPane hgap="5.0" vgap="5.0">
-         <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="163.0" minWidth="74.0" />
-            <ColumnConstraints fillWidth="true" halignment="LEFT" hgrow="ALWAYS" minWidth="50.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
+      <VBox fx:id="connectPanel" maxWidth="1.7976931348623157E308" stylesheets="@../styles/style.css">
          <children>
-            <Label text="AEM Host" />
-            <Label text="HTTPS?" GridPane.rowIndex="1" />
-            <Label text="AEM Login" GridPane.rowIndex="2" />
-            <Label text="Password" GridPane.rowIndex="3" />
-            <Label text="Adobe ID" GridPane.rowIndex="5" />
-            <Label text="Password" GridPane.rowIndex="6" />
-            <Label fx:id="aemConnectionVerificationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="21.0" styleClass="aemConnectionVerificationLabel" text="AEM login not verified" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
-                <padding>
-                  <Insets bottom="2.0" top="2.0" />
-               </padding>
-            </Label>
-            <Label fx:id="pkgConnectionVerificationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="21.0" styleClass="pkgConnectionVerificationLabel" text="Pkg share not connected" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
-               <padding>
-                  <Insets bottom="2.0" top="2.0" />
-               </padding>
-            </Label>
-            <TextField fx:id="hostField" promptText="localhost:4502" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-            <CheckBox fx:id="sslCheckbox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-            <TextField fx:id="adobeIdField" promptText="admin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-            <PasswordField fx:id="adobePasswordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+            <Label maxWidth="1.7976931348623157E308" styleClass="h1" text="Connect" />
+            <GridPane hgap="5.0" vgap="5.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="163.0" minWidth="74.0" />
+                  <ColumnConstraints fillWidth="true" halignment="LEFT" hgrow="ALWAYS" minWidth="50.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="AEM Host" />
+                  <Label text="HTTPS?" GridPane.rowIndex="1" />
+                  <Label text="AEM Login" GridPane.rowIndex="2" />
+                  <Label text="Password" GridPane.rowIndex="3" />
+                  <Label text="Adobe ID" GridPane.rowIndex="5" />
+                  <Label text="Password" GridPane.rowIndex="6" />
+                  <Label fx:id="aemConnectionVerificationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="21.0" styleClass="aemConnectionVerificationLabel" text="AEM login not verified" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+                      <padding>
+                        <Insets bottom="2.0" top="2.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="pkgConnectionVerificationLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="21.0" styleClass="pkgConnectionVerificationLabel" text="Pkg share not connected" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+                     <padding>
+                        <Insets bottom="2.0" top="2.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="hostField" promptText="localhost:4502" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                  <CheckBox fx:id="sslCheckbox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="usernameField" promptText="admin" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                  <TextField fx:id="adobeIdField" promptText="admin" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
+                  <PasswordField fx:id="adobePasswordField" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
+               </children>
+            </GridPane>
          </children>
-      </GridPane>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <styleClass>
+            <String fx:value="not-connected-pkg" />
+            <String fx:value="not-connected-aem" />
+         </styleClass>
+      </VBox>
    </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
-   <styleClass>
-      <String fx:value="not-connected-pkg" />
-      <String fx:value="not-connected-aem" />
-   </styleClass>
-</VBox>
+</AnchorPane>
