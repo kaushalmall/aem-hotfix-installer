@@ -5,15 +5,16 @@
  */
 package com.adobe.aem.utilities.hotfix.installer.ui;
 
+import com.adobe.aem.utilities.hotfix.installer.HotfixInstallerService;
 import com.adobe.aem.utilities.hotfix.installer.model.Hotfix;
 import com.adobe.aem.utilities.hotfix.installer.model.ProductVersion;
-import com.adobe.aem.utilities.hotfix.installer.utility.HotfixExtractor;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,15 +33,15 @@ public class PackageSelectPanelController implements Initializable {
     private TextField searchTextField;
     @FXML
     private TableView<Hotfix> searchResultsTable;
-    private HotfixExtractor hotfixExtractor;
+    private HotfixInstallerService installer;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        hotfixExtractor = new HotfixExtractor();
-        new Thread(this::extractVersions).start();
+        installer = HotfixInstallerService.getInstance();
+        recommendedPackages.setItems(installer.getProductVersions());
         recommendedPackages.valueProperty().addListener((p, o, n) -> selectProductVersion(n));
         recommendedPackages.setConverter(new StringConverter<ProductVersion>() {
             @Override
@@ -50,29 +51,32 @@ public class PackageSelectPanelController implements Initializable {
 
             @Override
             public ProductVersion fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
         searchResultsTable.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("name"));
         searchResultsTable.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("description"));
+        searchResultsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @FXML
     private void searchAction(ActionEvent event) {
+        if (searchTextField.getText() == null || "".equals(searchTextField.getText())) {
+            searchResultsTable.getItems().clear();
+        } else {
+            searchResultsTable.getItems().setAll(
+                installer.findHotfixesByText(searchTextField.getText())
+            );
+        }
     }
 
     @FXML
     private void addSelectedAction(ActionEvent event) {
-    }
-
-    private void extractVersions() {
-        recommendedPackages.getItems().addAll(
-                hotfixExtractor.scrapeProductVersions()
-        );
+        installer.getSelectedHotfixes().addAll(searchResultsTable.getSelectionModel().getSelectedItems());
     }
 
     private void selectProductVersion(ProductVersion version) {
-        searchResultsTable.getItems().setAll(hotfixExtractor.scrapeHotfixesByVersion(version));        
+        searchResultsTable.getItems().setAll(installer.findHotfixesByVersion(version));
     }
 
 }

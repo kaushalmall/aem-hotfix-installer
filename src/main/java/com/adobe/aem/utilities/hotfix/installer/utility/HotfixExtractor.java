@@ -125,13 +125,13 @@ public class HotfixExtractor {
     Locale l = new Locale("en","us");
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d yyyy", l);
     String[] removeFromDate = new String[] {
-        "st, ", "st ", "nd, ", "nd ", "rd, ", "rd ", "th, " , "th ", ", "
+        "([0-9])st, ", "([0-9])st ", "([0-9])nd, ", "([0-9])nd ", "([0-9])rd, ", "([0-9])rd ", "([0-9])th, " , "([0-9])th ", ", "
     };
     
     private Calendar parseDate(String str) {
         Calendar cal = Calendar.getInstance();
         for (String remove : removeFromDate) {
-            str = str.replace(remove, " ");
+            str = str.replaceAll(remove, "$1 ");
         }
         try {
             cal.setTime(dateFormat.parse(str));

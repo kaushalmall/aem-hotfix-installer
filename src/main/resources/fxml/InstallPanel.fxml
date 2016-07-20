@@ -4,8 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,12 +18,12 @@
                 <Button mnemonicParsing="false" onAction="#removeSelectedPackages" text="Remove selected" />
             </items>
         </ToolBar>
-        <TreeTableView fx:id="selectedPackagesTable" prefHeight="200.0" prefWidth="200.0">
+        <TableView fx:id="selectedPackagesTable" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TreeTableColumn maxWidth="1.7976931348623157E308" text="Package" />
-                <TreeTableColumn maxWidth="1.7976931348623157E308" prefWidth="115.0" text="Details" />
+                <TableColumn maxWidth="1.7976931348623157E308" text="Package" />
+                <TableColumn maxWidth="1.7976931348623157E308" prefWidth="115.0" text="Details" />
             </columns>
-        </TreeTableView>
+        </TableView>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <center>
                 <Button accessibleText="Install all packages indicated in the table above." mnemonicParsing="false" onAction="#installPackagesAction" prefHeight="66.0" prefWidth="99.0" styleClass="go-button" text="GO!" BorderPane.alignment="CENTER" />
