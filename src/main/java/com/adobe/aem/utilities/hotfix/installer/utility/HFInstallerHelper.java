@@ -1,6 +1,5 @@
 package com.adobe.aem.utilities.hotfix.installer.utility;
 
-import com.adobe.aem.utilities.hotfix.installer.HotfixInstaller;
 import com.adobe.aem.utilities.hotfix.installer.installstatus.object.InstallStatus;
 import com.adobe.aem.utilities.hotfix.installer.installstatus.object.Status;
 import com.adobe.aem.utilities.hotfix.installer.jaxb.packages.object.Crx;
